@@ -1,23 +1,33 @@
-import React, { useContext } from 'react'
-import { Box, Heading, Card, Grid, ResponsiveContext, Text } from 'grommet'
-
-const cards = Array(20).fill(null).map((_, i) => {
-    return <Text key={i}>{`Card ${i}`}</Text>
-})
+import { createFFmpeg } from '@ffmpeg/ffmpeg'
+import { Box } from 'grommet'
+import React, { useEffect, useState } from 'react'
+import InputFile from '../components/file_input'
 
 const Home = () => {
-    const size = useContext(ResponsiveContext)
+
+    const [ready, setReady] = useState(false)
+
+    const ffmpeg = createFFmpeg({log: true})
+
+    const load = async () => {
+        await ffmpeg.load()
+        setReady(true)
+    }
+
+    useEffect(() => {
+        load()        
+    }, [])
 
     return (
-        <Box pad="large">
-            <Heading level='1' alignSelf="center">Let's Go!</Heading>
-            <Grid gap="small" columns={size !== 'small' ? 'small' : '100%'}>
-                {cards.map((card, index) => (
-                    <Card pad="large" key={index}>
-                        {card}
-                    </Card>
-                ))}
-            </Grid>
+        <Box
+            border = {{color: 'brand', size: 'small'}}
+            align='center'
+            justify='center'
+            responsive={true}
+            pad='small'
+        >
+                <InputFile/>
+
         </Box>
     )
 }
