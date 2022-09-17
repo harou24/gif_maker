@@ -1,7 +1,10 @@
 import { FileInput } from 'grommet';
 import React from 'react'
+import { useDispatch } from 'react-redux';
+import { setFileToProcess } from '../../store/slices';
 
 const InputFile = () => {
+  const dispatch = useDispatch()
   return (
     <FileInput
         name="file"
@@ -11,6 +14,7 @@ const InputFile = () => {
               const file = fileList[i];
               console.log("FILE=>", file)
             }
+            dispatch(setFileToProcess(fileList[0]))
         }}
     />
   )

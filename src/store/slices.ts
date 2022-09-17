@@ -1,7 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { AppState } from "./store"
 
-const initialState: string = null
+const initialState: File = null
 
 export const fileManagementSlice = createSlice({
     name: 'fileManager',
@@ -9,11 +9,14 @@ export const fileManagementSlice = createSlice({
     reducers: {
         getFileToProcess: () => {
             console.log("Get File To Process...")
+        },
+        setFileToProcess: (state, action: PayloadAction<File>) => {
+            console.log("FILE->", action.payload)
         }
     }
 })
 
-export const { getFileToProcess } = fileManagementSlice.actions
+export const { getFileToProcess, setFileToProcess } = fileManagementSlice.actions
 
 export const fileManager = (state: AppState) => state.fileManager
 
