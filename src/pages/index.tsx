@@ -1,15 +1,14 @@
-import { createFFmpeg } from '@ffmpeg/ffmpeg'
-import { Box, FileInput } from 'grommet'
+import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg'
+import { Box, FileInput, Video } from 'grommet'
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { fileManager } from '../store/slices'
+
+const ffmpeg = createFFmpeg({log: true})
 
 const Home = () => {
 
     const [ready, setReady] = useState(false)
-    const videoFile = useSelector(fileManager);
-    const [video, setVideo] = useState(videoFile);
-    const ffmpeg = createFFmpeg({log: true})
+    const [video, setVideo] = useState(null)
+    const [gif, setGif] = useState()
 
     const load = async () => {
         await ffmpeg.load()
@@ -21,7 +20,7 @@ const Home = () => {
     }, [])
 
     const convertToGif = async () => {
-
+        ffmpeg.FS('writeFile', 'test.mp4', await fetchFile(video))
     }
 
     return (
@@ -41,11 +40,15 @@ const Home = () => {
                     }}
                 />
             </Box>
-                {video && <video
-                    controls
-                    width="250"
+            <Box
+                align='center'
+                pad='large'
+                responsive={true}
+            >
+                {video && <Video
                     src={URL.createObjectURL(video)}>
-                </video>}
+                </Video>}
+            </Box>
         </Box>
         
     )
